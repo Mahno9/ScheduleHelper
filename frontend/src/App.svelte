@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { currentUser } from './store';
+  import { currentUser, currentView } from './store';
   import Login from './lib/Login.svelte';
   import Register from './lib/Register.svelte';
   import Header from './lib/Header.svelte';
+  import PersonalCalendar from './lib/PersonalCalendar.svelte';
   
   let showRegister = false;
 </script>
@@ -11,8 +12,11 @@
   {#if $currentUser}
     <Header />
     <div class="content">
-      <!-- Main Content will go here based on currentView -->
-      <h1>Welcome, {$currentUser.username}!</h1>
+      {#if $currentView === 'personal'}
+        <PersonalCalendar />
+      {:else}
+        <h1>Общий календарь (Coming Soon)</h1>
+      {/if}
     </div>
   {:else if showRegister}
     <Register onCancel={() => showRegister = false} />
@@ -29,6 +33,8 @@
   }
   .content {
     flex: 1;
-    padding: 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
   }
 </style>
