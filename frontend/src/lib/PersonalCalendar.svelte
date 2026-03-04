@@ -167,7 +167,7 @@
 
 </script>
 
-<svelte:window on:mouseup={handleMouseUp} />
+<svelte:window on:mouseup={handleMouseUp} on:app-update={loadSlots} />
 
 <div class="calendar-container">
     <div class="header-row">

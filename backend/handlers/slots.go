@@ -60,6 +60,7 @@ func SlotsHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(s)
+		Broadcast("update", "slots")
 
 	case http.MethodPut:
 		var s models.Slot
@@ -80,6 +81,7 @@ func SlotsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
+		Broadcast("update", "slots")
 
 	case http.MethodDelete:
 		slotID := r.URL.Query().Get("id")
@@ -94,6 +96,7 @@ func SlotsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.WriteHeader(http.StatusNoContent)
+		Broadcast("update", "slots")
 
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

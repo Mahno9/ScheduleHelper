@@ -77,6 +77,8 @@
     }
 </script>
 
+<svelte:window on:app-update={loadData} />
+
 <div class="toolbar">
     <h2>Общий календарь</h2>
     <button class="btn primary" on:click={newEvent}>+ Создать событие</button>

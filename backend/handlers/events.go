@@ -91,6 +91,7 @@ func EventsHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(req)
+		Broadcast("update", "events")
 
 	case http.MethodPut:
 		var req EventRequest
@@ -119,6 +120,7 @@ func EventsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		tx.Commit()
 		w.WriteHeader(http.StatusOK)
+		Broadcast("update", "events")
 
 	case http.MethodDelete:
 		eventID := r.URL.Query().Get("id")
@@ -128,6 +130,7 @@ func EventsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		db.DB.Exec("DELETE FROM events WHERE id=?", eventID)
 		w.WriteHeader(http.StatusNoContent)
+		Broadcast("update", "events")
 
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

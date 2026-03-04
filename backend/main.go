@@ -41,6 +41,7 @@ func main() {
 	http.HandleFunc("/api/slots", handlers.SlotsHandler)
 	http.HandleFunc("/api/events", handlers.EventsHandler)
 	http.HandleFunc("/api/calendar", handlers.GetCalendarDataHandler)
+	http.HandleFunc("/api/sse", handlers.SSEHandler)
 	
 	http.HandleFunc("/", serveFrontend)
 

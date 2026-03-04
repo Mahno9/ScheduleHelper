@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { currentUser, currentView } from './store';
+  import { onMount } from 'svelte';
+  import { currentUser, currentView, setupSSE } from './store';
   import Login from './lib/Login.svelte';
   import Register from './lib/Register.svelte';
   import Header from './lib/Header.svelte';
@@ -7,6 +8,10 @@
   import CommonCalendar from './lib/CommonCalendar.svelte';
   
   let showRegister = false;
+
+  onMount(() => {
+    setupSSE();
+  });
 </script>
 
 <main>
