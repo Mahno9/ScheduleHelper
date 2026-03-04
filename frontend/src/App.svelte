@@ -4,6 +4,7 @@
   import Register from './lib/Register.svelte';
   import Header from './lib/Header.svelte';
   import PersonalCalendar from './lib/PersonalCalendar.svelte';
+  import CommonCalendar from './lib/CommonCalendar.svelte';
   
   let showRegister = false;
 </script>
@@ -15,7 +16,7 @@
       {#if $currentView === 'personal'}
         <PersonalCalendar />
       {:else}
-        <h1>Общий календарь (Coming Soon)</h1>
+        <CommonCalendar />
       {/if}
     </div>
   {:else if showRegister}
