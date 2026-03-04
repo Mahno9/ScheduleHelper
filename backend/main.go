@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"schedulehelper/db"
+	"schedulehelper/handlers"
 )
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +18,6 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 func serveFrontend(w http.ResponseWriter, r *http.Request) {
 	path := filepath.Join("frontend", "dist", filepath.Clean(r.URL.Path))
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		// SPA routing fallback
 		http.ServeFile(w, r, filepath.Join("frontend", "dist", "index.html"))
 		return
 	}
@@ -24,7 +25,17 @@ func serveFrontend(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if err := db.InitDB("schedulehelper.db"); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
+	defer db.CloseDB()
+
 	http.HandleFunc("/api/health", healthHandler)
+	http.HandleFunc("/api/users", handlers.GetUsersHandler)
+	http.HandleFunc("/api/register", handlers.RegisterHandler)
+	http.HandleFunc("/api/login", handlers.LoginHandler)
+	http.HandleFunc("/api/profile", handlers.ProfileHandler)
+	
 	http.HandleFunc("/", serveFrontend)
 
 	log.Println("Server listening on port 8080")
