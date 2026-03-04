@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"schedulehelper/cron"
 	"schedulehelper/db"
 	"schedulehelper/handlers"
 )
@@ -30,11 +31,16 @@ func main() {
 	}
 	defer db.CloseDB()
 
+	cron.StartCronJobs()
+
 	http.HandleFunc("/api/health", healthHandler)
 	http.HandleFunc("/api/users", handlers.GetUsersHandler)
 	http.HandleFunc("/api/register", handlers.RegisterHandler)
 	http.HandleFunc("/api/login", handlers.LoginHandler)
 	http.HandleFunc("/api/profile", handlers.ProfileHandler)
+	http.HandleFunc("/api/slots", handlers.SlotsHandler)
+	http.HandleFunc("/api/events", handlers.EventsHandler)
+	http.HandleFunc("/api/calendar", handlers.GetCalendarDataHandler)
 	
 	http.HandleFunc("/", serveFrontend)
 
