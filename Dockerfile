@@ -8,12 +8,14 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build Go backend
-FROM golang:1.23-alpine AS backend-builder
+FROM golang:1.24-alpine AS backend-builder
 WORKDIR /app/backend
-# CGO not needed with modernc sqlite
+# CGO not needed with modernc.org/sqlite (pure Go)
 ENV CGO_ENABLED=0
+ENV GOPROXY=https://proxy.golang.org,direct
+ENV GONOSUMDB=*
 COPY backend/go.mod backend/go.sum ./
-RUN go mod download
+RUN go mod download -x 2>&1 | tail -5
 COPY backend/ ./
 RUN go build -ldflags="-s -w" -o /schedulehelper .
 
